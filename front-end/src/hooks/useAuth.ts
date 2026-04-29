@@ -11,8 +11,7 @@ export const useAuth = () => {
     mutationFn: ({ authAction, data }) => authAction(data),
   });
 
-  const handleAuth = (authAction: AuthFn): AuthFn =>
-    (data) => mutateAsync({ authAction, data });
+  const handleAuth = (authAction: AuthFn) => (data: AuthData) => mutateAsync({ authAction, data });
 
   return {
     handleLogin: handleAuth(login),
