@@ -3,7 +3,7 @@ import { login, register, type AuthData } from "../api/auth";
 import type { AxiosError, AxiosResponse } from "axios";
 
 type AuthError = AxiosError<{ error: string }>;
-type AuthFn = (data: AuthData) => Promise<AxiosResponse>;
+export type AuthFn = (data: AuthData) => Promise<AxiosResponse>;
 type AuthMutationVars = { authAction: AuthFn; data: AuthData };
 
 export const useAuth = () => {
