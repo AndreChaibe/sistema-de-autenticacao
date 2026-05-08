@@ -1,20 +1,21 @@
+import { z } from "zod";
 import { useState } from "react";
-import { authSchema, type AuthData } from "../api/authSchema";
 
-type FormErrors = Partial<Record<keyof AuthData, string>>;
-type FormInput = Partial<AuthData>;
+type FormErrors = Record<string, string | undefined>;
+export type ZodFormSchema = z.ZodObject<z.ZodRawShape> | z.ZodPipe<z.ZodObject<z.ZodRawShape>>;
 
-export const useFormValidation = () => {
+export const useFormValidation = (schema: ZodFormSchema) => {
   const [errors, setErrors] = useState<FormErrors>({});
 
-  function validate(values: FormInput): values is AuthData {
-    const result = authSchema.safeParse(values);
+  function validate(values: Record<string, FormDataEntryValue>): boolean {
+    const result = schema.safeParse(values);
 
     if (!result.success) {
-      const fieldErrors = result.error.flatten().fieldErrors;
+      const errorsObject = result.error.flatten().fieldErrors as Record<string, string[]>;
       setErrors({
-        username: fieldErrors.username?.[0],
-        password: fieldErrors.password?.[0],
+        username: errorsObject.username?.[0],
+        password: errorsObject.password?.[0],
+        confirmPassword: errorsObject.confirmPassword?.[0],
       });
       return false;
     }

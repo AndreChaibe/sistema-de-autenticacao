@@ -5,7 +5,7 @@ interface PasswordInputProps {
     children: (typeInput: "text" | "password") => React.ReactNode;
 }
 
-const PasswordInput = ({ children }: PasswordInputProps) => {
+export const PasswordInput = ({ children }: PasswordInputProps) => {
     const [showPassword, setShowPassword] = useState(false);
 
     return (
@@ -17,5 +17,3 @@ const PasswordInput = ({ children }: PasswordInputProps) => {
         </div>
     );
 };
-
-export default PasswordInput;

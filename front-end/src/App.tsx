@@ -1,4 +1,4 @@
-import AuthContainer from "./components/shared/AuthContainer";
+import { AuthContainer } from "./components/shared";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Router from "./api/Route";
 import './index.css'

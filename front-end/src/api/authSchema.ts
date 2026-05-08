@@ -17,4 +17,12 @@ export const authSchema = z.object({
     .regex(/[^a-zA-Z0-9]/, "Pelo menos um caractere especial"),
 });
 
-export type AuthData = z.infer<typeof authSchema>;
+export const registerSchema = authSchema.extend({
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "As senhas não coincidem",
+    path: ["confirmPassword"],
+  });
+
+export type AuthData = Omit<z.infer<typeof registerSchema>, "confirmPassword">;

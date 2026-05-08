@@ -1,13 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
-import { login, register, type AuthData } from "../api/auth";
+import { login, register } from "../api/auth";
 import type { AxiosError, AxiosResponse } from "axios";
+import type { AuthData } from "../api/authSchema";
 
-type AuthError = AxiosError<{ error: string }>;
 export type AuthFn = (data: AuthData) => Promise<AxiosResponse>;
+type AuthError = AxiosError<{ error: string }>;
 type AuthMutationVars = { authAction: AuthFn; data: AuthData };
 
 export const useAuth = () => {
-  const { mutateAsync, isPending, error } = useMutation<AxiosResponse, AuthError, AuthMutationVars>({
+  const { mutateAsync, isPending, data, error } = useMutation<AxiosResponse, AuthError, AuthMutationVars>({
     mutationFn: ({ authAction, data }) => authAction(data),
   });
 
@@ -18,5 +19,6 @@ export const useAuth = () => {
     handleRegister: handleAuth(register),
     loading: isPending,
     error: error?.response?.data?.error ?? error?.message ?? null,
+    message: data?.data?.message ?? data?.statusText ?? null,
   };
 };
